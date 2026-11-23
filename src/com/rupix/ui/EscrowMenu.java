@@ -39,7 +39,7 @@ public class EscrowMenu {
             int choice;
 
             try {
-                choice = Integer.parseInt(sc.nextLine());
+                choice = Integer.parseInt(sc.nextLine().trim());
             } catch (NumberFormatException e) {
                 System.out.println("Enter a valid number!");
                 continue;
@@ -50,66 +50,74 @@ public class EscrowMenu {
 
                     case 1:
                         System.out.print("Project ID: ");
-                        int projectId = Integer.parseInt(sc.nextLine());
+                        int projectId = Integer.parseInt(sc.nextLine().trim());
 
                         System.out.print("Client UPI: ");
-                        String client = sc.nextLine();
+                        String client = sc.nextLine().trim();
 
                         System.out.print("Freelancer UPI: ");
-                        String freelancer = sc.nextLine();
+                        String freelancer = sc.nextLine().trim();
 
                         System.out.print("Total amount (rupees): ");
                         long amount = Math.multiplyExact(
-                                Long.parseLong(sc.nextLine()), 100);
+                                Long.parseLong(sc.nextLine().trim()), 100
+                        );
 
                         escrowService.createProject(
                                 new EscrowProject(
-                                        projectId, client, freelancer, amount));
+                                        projectId, client, freelancer, amount
+                                )
+                        );
                         break;
 
                     case 2:
                         System.out.print("Project ID: ");
                         escrowService.fundProject(
-                                Integer.parseInt(sc.nextLine()));
+                                Integer.parseInt(sc.nextLine().trim())
+                        );
                         break;
 
                     case 3:
                         System.out.print("Project ID: ");
-                        int pId = Integer.parseInt(sc.nextLine());
+                        int pId = Integer.parseInt(sc.nextLine().trim());
 
                         EscrowProject project =
                                 escrowService.getProject(pId);
 
                         System.out.print("Milestone ID: ");
-                        int mId = Integer.parseInt(sc.nextLine());
+                        int mId = Integer.parseInt(sc.nextLine().trim());
 
                         System.out.print("Description: ");
-                        String description = sc.nextLine();
+                        String description = sc.nextLine().trim();
 
                         System.out.print("Amount (rupees): ");
                         long mAmount = Math.multiplyExact(
-                                Long.parseLong(sc.nextLine()), 100);
+                                Long.parseLong(sc.nextLine().trim()), 100
+                        );
 
                         milestoneService.addMilestone(
                                 new Milestone(mId, pId, description, mAmount),
-                                project);
+                                project
+                        );
                         break;
 
                     case 4:
                         System.out.print("Milestone ID: ");
                         milestoneService.approveMilestone(
-                                Integer.parseInt(sc.nextLine()));
+                                Integer.parseInt(sc.nextLine().trim())
+                        );
                         break;
 
                     case 5:
                         System.out.print("Milestone ID: ");
                         milestoneService.releaseMilestone(
-                                Integer.parseInt(sc.nextLine()));
+                                Integer.parseInt(sc.nextLine().trim())
+                        );
                         break;
 
                     case 6:
                         System.out.print("Project ID: ");
-                        int reportId = Integer.parseInt(sc.nextLine());
+                        int reportId = Integer.parseInt(sc.nextLine().trim());
 
                         EscrowProject reportProject =
                                 escrowService.getProject(reportId);
@@ -118,7 +126,8 @@ public class EscrowMenu {
                                 milestoneService.getMilestonesByProject(reportId);
 
                         EscrowReport.generateReport(
-                                reportProject, reportMilestones);
+                                reportProject, reportMilestones
+                        );
                         break;
 
                     case 7:
@@ -133,7 +142,8 @@ public class EscrowMenu {
                                         "Project ID: " + p.getProjectId()
                                                 + " | Client: " + p.getClientUpi()
                                                 + " | Freelancer: " + p.getFreelancerUpi()
-                                                + " | Status: " + p.getStatus());
+                                                + " | Status: " + p.getStatus()
+                                );
                             }
                         }
                         break;

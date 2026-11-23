@@ -13,3 +13,6 @@ config.properties
 
 # Logs
 *.log
+
+# Local application data
+data/
