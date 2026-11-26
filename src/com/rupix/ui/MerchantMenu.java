@@ -5,7 +5,6 @@ import com.rupix.model.Merchant;
 import com.rupix.model.MerchantPayment;
 import com.rupix.service.MerchantService;
 import com.rupix.service.SettlementService;
-import com.rupix.settlement.SettlementQueue;
 import com.rupix.util.MerchantReport;
 
 import java.util.List;
@@ -15,7 +14,6 @@ public class MerchantMenu {
 
     private final MerchantService merchantService;
     private final SettlementService settlementService;
-    private final SettlementQueue settlementQueue;
     private final MerchantReport merchantReport;
     private final Scanner scanner;
 
@@ -27,9 +25,6 @@ public class MerchantMenu {
         this.merchantService = merchantService;
         this.settlementService = settlementService;
         this.scanner = scanner;
-
-        this.settlementQueue =
-                new SettlementQueue(settlementService);
 
         this.merchantReport = new MerchantReport();
     }
@@ -43,10 +38,9 @@ public class MerchantMenu {
             System.out.println("2. View All Merchants");
             System.out.println("3. Record Merchant Payment");
             System.out.println("4. View All Payments");
-            System.out.println("5. Add Payment to Settlement Queue");
-            System.out.println("6. Process Settlement Queue");
-            System.out.println("7. Generate Merchant Report");
-            System.out.println("8. Back to Main Menu");
+            System.out.println("5. Process Settlement");
+            System.out.println("6. Generate Merchant Report");
+            System.out.println("7. Back to Main Menu");
 
             System.out.print("Enter choice: ");
 
@@ -72,18 +66,14 @@ public class MerchantMenu {
                         break;
 
                     case 5:
-                        addToQueue();
+                        processSettlement();
                         break;
 
                     case 6:
-                        processQueue();
-                        break;
-
-                    case 7:
                         generateReport();
                         break;
 
-                    case 8:
+                    case 7:
                         return;
 
                     default:
@@ -189,20 +179,14 @@ public class MerchantMenu {
         }
     }
 
-    private void addToQueue() {
+    private void processSettlement() {
 
         System.out.print("Enter payment ID: ");
         int paymentId = Integer.parseInt(scanner.nextLine());
 
-        settlementQueue.addPayment(paymentId);
-    }
+        settlementService.processSettlement(paymentId);
 
-    private void processQueue() {
-
-        System.out.print("Enter number of worker threads: ");
-        int threads = Integer.parseInt(scanner.nextLine());
-
-        settlementQueue.processQueue(threads);
+        System.out.println("Settlement processed successfully!");
     }
 
     private void generateReport() {
